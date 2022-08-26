@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import DarkmodeToggle from './DarkmodeToggle'
 
 interface TimerNumbers {
@@ -6,7 +6,7 @@ interface TimerNumbers {
   intervalTime: number
 }
 
-const TIMERS: TimerNumbers = { intervalTime: 5, studyTime: 5 }
+const TIMERS: TimerNumbers = { intervalTime: 5, studyTime: 25 }
 
 enum Phase { STUDY, INTERVAL }
 enum Mode { TIMER, CONFIG }
@@ -20,10 +20,10 @@ const App = () => {
   const [phase, setPhase] = useState<Phase>(Phase.STUDY)
   const [mode, setMode] = useState<Mode>(Mode.TIMER)
 
-  const [form, setForm] = useState<{ st: number, it: number }>({ st: 0, it: 0 })
+  const [form, setForm] = useState<{ st: number, it: number }>({ st: TIMERS.studyTime, it: TIMERS.intervalTime })
 
   const [pause, setPause] = useState(true)
-  const [studyTime, setStudyTime] = useState<number>(TIMERS.studyTime) // 25 minutes default
+  const [studyTime, setStudyTime] = useState<number>(TIMERS.studyTime * 60) // 25 minutes default
   const [intervalTime, setIntervalTime] = useState<number>(0) // 5 minutes default
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const App = () => {
         } else {
           setPhase(Phase.INTERVAL)
           setPause(true)
-          setIntervalTime(TIMERS.intervalTime)
+          setIntervalTime(form.it)
           sound.play()
         }
       } else {
@@ -44,7 +44,7 @@ const App = () => {
           setPhase(Phase.STUDY)
           setPause(true)
           setCicle(cicle + 1)
-          setStudyTime(TIMERS.studyTime)
+          setStudyTime(form.st)
           sound.play()
         }
       }
@@ -62,9 +62,23 @@ const App = () => {
     else setMode(Mode.TIMER)
   }
 
+  const setTimer = (e: FormEvent) => {
+    e.preventDefault()
+
+    setStudyTime(form.st * 60)
+    setIntervalTime(form.it * 60)
+    setMode(Mode.TIMER)
+  }
+
+  const resetConfig = () => {
+    setStudyTime(TIMERS.studyTime * 60)
+    setIntervalTime(0)
+    setMode(Mode.TIMER)
+  }
+
   const formatClock = (timeUnit: number) => {
     const minutes = Math.floor(timeUnit / 60) > 10 ? Math.floor(timeUnit / 60) : "0" + Math.floor(timeUnit / 60)
-    const seconds = timeUnit % 60 > 10 ? timeUnit % 60 : "0" + timeUnit % 60
+    const seconds = timeUnit % 60 >= 10 ? timeUnit % 60 : "0" + timeUnit % 60
     return `${minutes}:${seconds}`
   }
 
@@ -104,12 +118,12 @@ const App = () => {
 
         <span className=''>Current cicle: {cicle}/4</span>
       </div>
-    </div> : <form className='flex p-4 gap-y-4 flex-1 flex-col items-center justify-center'>
+    </div> : <form onSubmit={e => setTimer(e)} className='flex p-4 gap-y-4 flex-1 flex-col items-center justify-center'>
       <span className='text-4xl font-bold'>Configure Timer</span>
 
       <span>Study time: (Minutes)</span>
       <input
-        value={form?.st} onChange={e => setForm({ ...form, st: Number(e.target.value) })}
+        value={form?.st} onChange={e => setForm({ ...form, st: Number(e.target.value) })} 
         className='text-2xl text-center rounded-md py-2 w-36 text-black' placeholder='Minutes' type="text"
       />
 
@@ -120,9 +134,17 @@ const App = () => {
       />
 
       <button
+        type='submit'
         className='text-3xl font-extrabold track-wider cursor-pointer hover:text-gray-400 duration-300 transition-colors'
       >
         Set config
+      </button>
+
+      <button
+        onClick={() => resetConfig()}
+        className='text-3xl font-extrabold track-wider cursor-pointer hover:text-gray-400 duration-300 transition-colors'
+      >
+        Reset config
       </button>
 
     </form>
