@@ -12,6 +12,9 @@ enum Phase { STUDY, INTERVAL }
 
 const App = () => {
 
+  const sound = new Audio("/bell.mp3")
+  sound.volume = 0.1
+
   const [cicle, setCicle] = useState(1)
   const [phase, setPhase] = useState<Phase>(Phase.STUDY)
   const [pause, setPause] = useState(true)
@@ -28,6 +31,7 @@ const App = () => {
           setPhase(Phase.INTERVAL)
           setPause(true)
           setIntervalTime(TIMERS.intervalTime)
+          sound.play()
         }
       } else {
         if (intervalTime !== 0) {
@@ -37,6 +41,7 @@ const App = () => {
           setPause(true)
           setCicle(cicle + 1)
           setStudyTime(TIMERS.studyTime)
+          sound.play()
         }
       }
     }, 1000)
