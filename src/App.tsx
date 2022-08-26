@@ -43,7 +43,7 @@ const App = () => {
   return () => clearInterval(interval)
   }, [studyTime, intervalTime, pause])
 
-  const tickTimer = () => {
+  const tickTimer = () => { 
     setPause(!pause)
   }
 
