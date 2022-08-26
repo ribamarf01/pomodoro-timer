@@ -53,14 +53,16 @@ const App = () => {
     return `${minutes}:${seconds}`
   }
 
-  return <main className='font-poppins bg-slate-800 min-w-full min-h-screen text-white flex flex-col justify-center items-center gap-y-8'>
-    <h1 className='text-5xl font-extrabold tracking-wide'>PomoTimer: {phase === Phase.STUDY ? "Study time" : "Interval"}</h1>
-    <div className='text-9xl font-extrabold flex flex-col items-center'>
+  return <main className='font-poppins bg-mint-cream dark:bg-slate-800 min-w-full min-h-screen dark:text-white text-gray-700 flex flex-col justify-center items-center gap-y-8 p-8'>
+    <h1 className='text-7xl font-extrabold tracking-wide'>Pomotimer</h1>
+    <div className='text-7xl font-extrabold flex flex-col items-center justify-center p-4 gap-y-4 border-b-8 border-t-8 border-gray-600 w-full'>
       { phase === Phase.STUDY ? <>
+        <span className='text-4xl '>Study time!</span>
         <svg className="w-48 h-48" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
         <span>{formatClock(studyTime)}</span>
         </>
         : <>
+        <span className='text-4xl '>Take a coffee break !!!</span>
         <svg className="w-48 h-48" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
         <span>{formatClock(intervalTime)}</span>
         </>
@@ -71,14 +73,14 @@ const App = () => {
     { !pause ? 
       <button
         onClick={() => tickTimer()}
-        className='text-5xl font-extrabold track-wider cursor-pointer'
+        className='text-5xl font-extrabold track-wider cursor-pointer hover:text-gray-600 duration-300 transition-colors'
       >
         Stop
       </button> 
       : 
       <button
         onClick={() => tickTimer()}
-        className='text-5xl font-extrabold track-wider cursor-pointer'
+        className='text-5xl font-extrabold track-wider cursor-pointer hover:text-gray-400 duration-300 transition-colors'
       >
         Start
       </button> }
