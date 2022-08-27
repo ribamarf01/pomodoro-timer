@@ -23,6 +23,7 @@ const App = () => {
   const [mode, setMode] = useState<Mode>(Mode.TIMER)
 
   const [enough, setEnough] = useState(false)
+  const [maxCicles, setMaxCicles] = useState(4)
 
   const [form, setForm] = useState<{ st: number, it: number }>({ st: TIMERS.studyTime, it: TIMERS.intervalTime })
 
@@ -50,7 +51,7 @@ const App = () => {
           setCicle(cicle + 1)
           setStudyTime(form.st)
           sound.play()
-          if (cicle > 4) setEnough(true)
+          if (cicle > maxCicles) setEnough(true)
         }
       }
     }, 1000)
@@ -78,6 +79,7 @@ const App = () => {
   const resetConfig = () => {
     setStudyTime(TIMERS.studyTime * 60)
     setIntervalTime(0)
+    setMaxCicles(4)
     setMode(Mode.TIMER)
   }
 
@@ -102,7 +104,7 @@ const App = () => {
       <div className='text-7xl font-extrabold flex flex-col items-center justify-center p-4 gap-y-4 border-b-8 border-t-8 dark:border-gray-300 border-gray-600 xl:w-1/3 md:w-2/3 w-full'>
         {phase === Phase.STUDY ? <>
           <span className='text-4xl text-center'>
-            { !enough ?
+            { enough ?
               <p className='flex flex-col items-center gap-y-2'>
                 <span>Attention.</span>
                 <span>Too much study may be dangerous!</span>
@@ -137,7 +139,7 @@ const App = () => {
             Start
           </button>}
 
-        <span className=''>Current cicle: {cicle}/4</span>
+        <span className=''>Current cicle: {cicle}/{maxCicles}</span>
       </div>
     </div> : <form onSubmit={e => setTimer(e)} className='flex p-4 gap-y-4 flex-1 flex-col items-center justify-center'>
       <span className='text-4xl font-bold'>Configure Timer</span>
@@ -151,6 +153,12 @@ const App = () => {
       <span>Interval time: (Minutes)</span>
       <input
         value={form?.it} onChange={e => setForm({ ...form, it: Number(e.target.value) })}
+        className='text-2xl text-center rounded-md py-2 w-36 text-black' placeholder='Minutes' type="text"
+      />
+
+      <span>Max cicles:</span>
+      <input
+        value={maxCicles} onChange={e => setMaxCicles(Number(e.target.value))}
         className='text-2xl text-center rounded-md py-2 w-36 text-black' placeholder='Minutes' type="text"
       />
 
