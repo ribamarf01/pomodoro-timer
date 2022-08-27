@@ -1,5 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react'
+
 import DarkmodeToggle from './DarkmodeToggle'
+import ResetPomodoroButton from './ResetPomodoroButton'
 
 interface TimerNumbers {
   studyTime: number
@@ -19,6 +21,8 @@ const App = () => {
   const [cicle, setCicle] = useState(1)
   const [phase, setPhase] = useState<Phase>(Phase.STUDY)
   const [mode, setMode] = useState<Mode>(Mode.TIMER)
+
+  const [enough, setEnough] = useState(false)
 
   const [form, setForm] = useState<{ st: number, it: number }>({ st: TIMERS.studyTime, it: TIMERS.intervalTime })
 
@@ -46,6 +50,7 @@ const App = () => {
           setCicle(cicle + 1)
           setStudyTime(form.st)
           sound.play()
+          if(cicle > 4) setEnough(true)
         }
       }
     }, 1000)
@@ -74,6 +79,14 @@ const App = () => {
     setStudyTime(TIMERS.studyTime * 60)
     setIntervalTime(0)
     setMode(Mode.TIMER)
+  }
+
+  const reset = () => {
+    setStudyTime(form.st)
+    setIntervalTime(form.it)
+    setMode(Mode.TIMER)
+    setPhase(Phase.STUDY)
+    setEnough(false)
   }
 
   const formatClock = (timeUnit: number) => {
@@ -123,7 +136,7 @@ const App = () => {
 
       <span>Study time: (Minutes)</span>
       <input
-        value={form?.st} onChange={e => setForm({ ...form, st: Number(e.target.value) })} 
+        value={form?.st} onChange={e => setForm({ ...form, st: Number(e.target.value) })}
         className='text-2xl text-center rounded-md py-2 w-36 text-black' placeholder='Minutes' type="text"
       />
 
@@ -165,6 +178,7 @@ const App = () => {
     }
 
     <DarkmodeToggle />
+    <ResetPomodoroButton handle={reset} />
 
   </main>
 
