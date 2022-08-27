@@ -50,7 +50,7 @@ const App = () => {
           setCicle(cicle + 1)
           setStudyTime(form.st)
           sound.play()
-          if(cicle > 4) setEnough(true)
+          if (cicle > 4) setEnough(true)
         }
       }
     }, 1000)
@@ -82,8 +82,8 @@ const App = () => {
   }
 
   const reset = () => {
-    setStudyTime(form.st)
-    setIntervalTime(form.it)
+    setStudyTime(form.st * 60)
+    setIntervalTime(form.it * 60)
     setMode(Mode.TIMER)
     setPhase(Phase.STUDY)
     setEnough(false)
@@ -95,18 +95,26 @@ const App = () => {
     return `${minutes}:${seconds}`
   }
 
-  return <main className='font-poppins bg-mint-cream dark:bg-slate-800 min-w-full min-h-screen dark:text-white text-gray-700 flex flex-col justify-center items-center gap-y-8 p-8'>
+  return <main className='font-poppins bg-mint-cream dark:bg-slate-800 min-w-full min-h-screen dark:text-white text-gray-700 flex flex-col justify-center items-center gap-y-8 p-8 transition-colors duration-300'>
     <h1 className='text-7xl font-extrabold tracking-wide flex items-center'>Pomotimer</h1>
 
     {mode === Mode.TIMER ? <div className='w-full flex flex-col items-center justify-center flex-1 gap-y-8'>
       <div className='text-7xl font-extrabold flex flex-col items-center justify-center p-4 gap-y-4 border-b-8 border-t-8 dark:border-gray-300 border-gray-600 xl:w-1/3 md:w-2/3 w-full'>
         {phase === Phase.STUDY ? <>
-          <span className='text-4xl '>Study time!</span>
+          <span className='text-4xl text-center'>
+            { !enough ?
+              <p className='flex flex-col items-center gap-y-2'>
+                <span>Attention.</span>
+                <span>Too much study may be dangerous!</span>
+              </p>
+              : "Study time!"
+            }
+          </span>
           <svg className="w-48 h-48" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
           <span>{formatClock(studyTime)}</span>
         </>
           : <>
-            <span className='text-4xl '>Take a coffee break !!!</span>
+            <span className='text-4xl '>Take a coffee break!!!</span>
             <svg className="w-48 h-48" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
             <span>{formatClock(intervalTime)}</span>
           </>
