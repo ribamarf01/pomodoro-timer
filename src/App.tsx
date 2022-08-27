@@ -81,6 +81,7 @@ const App = () => {
     setIntervalTime(0)
     setMaxCicles(4)
     setMode(Mode.TIMER)
+    setPause(true)
   }
 
   const reset = () => {
