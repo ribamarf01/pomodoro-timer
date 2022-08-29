@@ -18,12 +18,12 @@ const App = () => {
   const sound = new Audio("/bell.mp3")
   sound.volume = 0.1
 
-  const [cicle, setCicle] = useState(1)
+  const [cycle, setCycle] = useState(1)
   const [phase, setPhase] = useState<Phase>(Phase.STUDY)
   const [mode, setMode] = useState<Mode>(Mode.TIMER)
 
   const [enough, setEnough] = useState(false)
-  const [maxCicles, setMaxCicles] = useState(4)
+  const [maxCycles, setMaxCycles] = useState(4)
 
   const [form, setForm] = useState<{ st: number, it: number }>({ st: TIMERS.studyTime, it: TIMERS.intervalTime })
 
@@ -48,10 +48,10 @@ const App = () => {
         } else {
           setPhase(Phase.STUDY)
           setPause(true)
-          setCicle(cicle + 1)
+          setCycle(cycle + 1)
           setStudyTime(form.st)
           sound.play()
-          if (cicle > maxCicles) setEnough(true)
+          if (cycle > maxCycles) setEnough(true)
         }
       }
     }, 1000)
@@ -74,12 +74,13 @@ const App = () => {
     setStudyTime(form.st * 60)
     setIntervalTime(form.it * 60)
     setMode(Mode.TIMER)
+    setPause(true)
   }
 
   const resetConfig = () => {
     setStudyTime(TIMERS.studyTime * 60)
     setIntervalTime(0)
-    setMaxCicles(4)
+    setMaxCycles(4)
     setMode(Mode.TIMER)
     setPause(true)
   }
@@ -87,6 +88,7 @@ const App = () => {
   const reset = () => {
     setStudyTime(form.st * 60)
     setIntervalTime(form.it * 60)
+    setCycle(1)
     setMode(Mode.TIMER)
     setPhase(Phase.STUDY)
     setEnough(false)
@@ -106,7 +108,7 @@ const App = () => {
       <div className='text-7xl font-extrabold flex flex-col items-center justify-center p-4 gap-y-4 border-b-8 border-t-8 dark:border-gray-300 border-gray-600 xl:w-1/3 md:w-2/3 w-full'>
         {phase === Phase.STUDY ? <>
           <span className='text-4xl text-center'>
-            { !enough ?
+            { enough ?
               <p className='flex flex-col items-center'>
                 <span>Enough for today...</span>
               </p>
@@ -140,10 +142,10 @@ const App = () => {
             Start
           </button>}
 
-        <span className=''>Current cicle: {cicle}/{maxCicles}</span>
+        <span className=''>Current cycle: {cycle}/{maxCycles}</span>
       </div>
     </div> : <form onSubmit={e => setTimer(e)} className='flex p-4 gap-y-4 flex-1 flex-col items-center justify-center'>
-      <span className='text-4xl font-bold'>Configure Timer</span>
+      <span className='text-4xl text-center font-bold'>Configure Timer</span>
 
       <span>Study time: (Minutes)</span>
       <input
@@ -157,9 +159,9 @@ const App = () => {
         className='text-2xl text-center rounded-md py-2 w-36 text-black' placeholder='Minutes' type="text"
       />
 
-      <span>Max cicles:</span>
+      <span>Max cycles:</span>
       <input
-        value={maxCicles} onChange={e => setMaxCicles(Number(e.target.value))}
+        value={maxCycles} onChange={e => setMaxCycles(Number(e.target.value))}
         className='text-2xl text-center rounded-md py-2 w-36 text-black' placeholder='Minutes' type="text"
       />
 
