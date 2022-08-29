@@ -99,7 +99,7 @@ const App = () => {
   }
 
   return <main className='font-poppins bg-mint-cream dark:bg-slate-800 min-w-full min-h-screen dark:text-white text-gray-700 flex flex-col justify-center items-center gap-y-8 p-8 transition-colors duration-300'>
-    <h1 className='md:text-7xl sm:text-6xl text-5xl font-extrabold tracking-wide flex flex-1 items-end'>Pomotimer</h1>
+    <h1 className='md:text-7xl sm:text-5xl text-3xl font-extrabold tracking-wide flex flex-1 items-end'>Pomotimer</h1>
 
     {mode === Mode.TIMER ? <div className='w-full flex flex-col items-center justify-center flex-1 gap-y-8'>
       <div className='text-7xl font-extrabold flex flex-col items-center justify-center p-4 gap-y-4 border-b-8 border-t-8 dark:border-gray-300 border-gray-600 xl:w-1/3 md:w-2/3 w-full'>
